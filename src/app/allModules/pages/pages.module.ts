@@ -47,6 +47,9 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FormsModule } from '@angular/forms';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardService } from 'app/services/dashboard.service';
+import { PdfDialogComponent } from './pdf-dialog/pdf-dialog.component';
+import { CancelIrnDialogComponent } from './cancel-irn-dialog/cancel-irn-dialog.component';
 
 const routes = [
     {
@@ -114,8 +117,11 @@ const routes = [
         FormsModule,
         NgxMaterialTimepickerModule
     ],
-    declarations: [DashboardComponent],
+    declarations: [DashboardComponent,PdfDialogComponent, CancelIrnDialogComponent],
     providers: [],
-    entryComponents: []
+    entryComponents: [
+        PdfDialogComponent,
+        CancelIrnDialogComponent
+    ]
 })
 export class PagesModule { }

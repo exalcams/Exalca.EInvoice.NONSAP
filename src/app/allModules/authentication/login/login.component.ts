@@ -117,16 +117,17 @@ export class LoginComponent implements OnInit {
     localStorage.setItem('authorizationData', JSON.stringify(data));
     this.UpdateMenu();
     this.notificationSnackBarComponent.openSnackBar('Logged in successfully', SnackBarStatus.success);
-    // if (data.userRole === 'Administrator') {
-    //   this._router.navigate(['pages/adminDashboard']);
-    // } else {
+    if (data.userRole === 'Administrator') {
+      this._router.navigate(['pages/dashboard']);
+    } 
+    // else {
     //   this._router.navigate(['pages/dashboard']);
     // }
-    if (this.MenuItems.indexOf('RFQ Dashboard') >= 0) {
-      this._router.navigate(['rfq/dashboard']);
-    } else {
-      this._router.navigate(['pages/dashboard']);
-    }
+    // if (this.MenuItems.indexOf('RFQ Dashboard') >= 0) {
+    //   this._router.navigate(['rfq/dashboard']);
+    // } else {
+     // this._router.navigate(['pages/dashboard']);
+    // }
   }
 
   OpenChangePasswordDialog(data: AuthenticationDetails): void {
@@ -208,21 +209,21 @@ export class LoginComponent implements OnInit {
       );
     }
 
-    if (this.MenuItems.indexOf('RFQ Dashboard') >= 0) {
-      this.children.push(
-        {
-          id: 'rfqDashboard',
-          title: 'Dashboard',
-          translate: 'NAV.SAMPLE.TITLE',
-          type: 'item',
-          icon: 'dashboardIcon',
-          isSvgIcon: true,
-          // icon: 'dashboard',
-          // isSvgIcon: false,
-          url: '/rfq/dashboard',
-        }
-      );
-    }
+    // if (this.MenuItems.indexOf('RFQ Dashboard') >= 0) {
+    //   this.children.push(
+    //     {
+    //       id: 'rfqDashboard',
+    //       title: 'Dashboard',
+    //       translate: 'NAV.SAMPLE.TITLE',
+    //       type: 'item',
+    //       icon: 'dashboardIcon',
+    //       isSvgIcon: true,
+    //       // icon: 'dashboard',
+    //       // isSvgIcon: false,
+    //       url: '/rfq/dashboard',
+    //     }
+    //   );
+    // }
 
     // if (this.MenuItems.indexOf('RFQ Dashboard') >= 0) {
     //   this.rfqSubChildren.push(
@@ -288,16 +289,16 @@ export class LoginComponent implements OnInit {
         }
       );
     }
-    if (this.MenuItems.indexOf('AdapterType') >= 0) {
-      this.subChildren.push(
-        {
-          id: 'adapterType',
-          title: 'Adapter Type',
-          type: 'item',
-          url: '/master/adapterType'
-        }
-      );
-    }
+    // if (this.MenuItems.indexOf('AdapterType') >= 0) {
+    //   this.subChildren.push(
+    //     {
+    //       id: 'adapterType',
+    //       title: 'Adapter Type',
+    //       type: 'item',
+    //       url: '/master/adapterType'
+    //     }
+    //   );
+    // }
 
     if (this.MenuItems.indexOf('App') >= 0 || this.MenuItems.indexOf('Role') >= 0
       || this.MenuItems.indexOf('User') >= 0 || this.MenuItems.indexOf('AdapterType') >= 0) {

@@ -1,5 +1,133 @@
-<div class="page-layout blank p-24" fusePerfectScrollbar>
-  <div class="container" fxLayout="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="10">
+<div id="chat" class=" page-layout carded fullwidth" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="10">
+    <div fxFlex>
+      <mat-card class="fullHeight p-12">
+        <mat-card-content>
+          <div fxLayout="row">
+            <div fxFlex align="end">
+              <button  mat-raised-button class="btnBg1" (click)="GenarateIRN()">Genarate IRN</button>
+              <button  mat-raised-button class="btnBg" (click)="Print()">Print</button>
+              <button  mat-raised-button class="btnBg2" (click)="CancelIrnDetailsClick()">Cancel IRN</button>
+              <!-- <mat-icon style="height: 24px; width: 40px;margin-left: -10px;color: red;">dashboard</mat-icon>
+              <mat-icon style="height: 24px; width: 40px;margin-left: -10px;" svgIcon="dashboardIcon"></mat-icon> -->
+            </div>
+          </div>
+          <div fxLayout="row" class="mt-8">
+            <div fxFlex="100">
+              <table mat-table [dataSource]="dataSource">
+                <tr mat-header-row *matHeaderRowDef="displayedColumns">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
+                <ng-container matColumnDef="Select">
+                  <th mat-header-cell *matHeaderCellDef>
+                    Select
+                  </th>
+                  <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (change)="onChangeChk($event,row)" [checked]="SelectedINV?.InvoiceID===row.InvoiceID">
+                    </mat-checkbox>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Document_Type">
+                  <th mat-header-cell *matHeaderCellDef>Document Type</th>
+                  <td mat-cell *matCellDef="let element">{{element.DocumentType}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Type">
+                  <th mat-header-cell *matHeaderCellDef>Type</th>
+                  <td mat-cell *matCellDef="let element">{{element.Type}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Invoice_Number">
+                  <th mat-header-cell *matHeaderCellDef>Invoice Number</th>
+                  <td mat-cell *matCellDef="let element">{{element.InvoiceNumber}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Invoice_Date">
+                  <th mat-header-cell *matHeaderCellDef>Invoice Date</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.InvoiceDate | date:'dd-MM-yyyy'}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Customer">
+                  <th mat-header-cell *matHeaderCellDef>Customer</th>
+                  <td mat-cell *matCellDef="let element">{{element.Customer}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Plant">
+                  <th mat-header-cell *matHeaderCellDef>Plant</th>
+                  <td mat-cell *matCellDef="let element">6000</td>
+                </ng-container>
+                <ng-container matColumnDef="IRN">
+                  <th mat-header-cell *matHeaderCellDef>IRN</th>
+                  <td mat-cell *matCellDef="let element">{{element.IRN}}</td>
+                </ng-container>
+                <ng-container matColumnDef="IRN_Date">
+                  <th mat-header-cell *matHeaderCellDef>IRN Date</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.IRNDate}}
+                    <!-- {{element.IRNDate}} -->
+                  </td>
+                </ng-container>
+                <!-- <ng-container matColumnDef="IRN_Time">
+                  <th mat-header-cell *matHeaderCellDef>IRN Time</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.IRNDate}}
+                    {{row.IRNDate | date : 'dd-MM-yyyy hh:mm:ss a'}}
+                   </td>
+                </ng-container> -->
+
+
+                <ng-container matColumnDef="ACK_Number">
+                  <th mat-header-cell *matHeaderCellDef>ACK Number</th>
+                  <td mat-cell *matCellDef="let element">{{element.ACKNumber}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let element">{{element.Status}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="View">
+                  <th mat-header-cell *matHeaderCellDef> View </th>
+                  <td mat-cell *matCellDef="let row">
+                    <!-- <img src="/assets/images/icons/image.png" (click)="ViewPdfFromID(row.InvoiceID,row.InvoiceNumber)" style="height: 20px;width: 20px;"> -->
+                    <mat-icon aria-label="image" (click)="ViewPdfFromID(row.InvoiceID,row.InvoiceNumber)">image</mat-icon>
+                  </td>
+                </ng-container>
+  
+                <!-- <ng-container matColumnDef="Download">
+                  <th mat-header-cell *matHeaderCellDef> Download</th>
+                  <td mat-cell *matCellDef="let row">
+                    <img src="/assets/images/icons/download-button.png" (click)="DowloandPdfFromID(row.ID,row.INVOICE_NAME)" style="height: 20px;width: 20px;">
+                    <mat-icon aria-label="file_download" (click)="DowloandPdfFromID(row.ID,row.INVOICE_NAME)">
+                      file_download
+                    </mat-icon>
+                  </td>
+                </ng-container> -->
+
+                <!-- <ng-container matColumnDef="Action">
+                  <th mat-header-cell *matHeaderCellDef>Action</th>
+                  <td mat-cell *matCellDef="let element">
+                    <button class="btnOuter" mat-stroked-button (click)="ReleaseRFQ(element)">Release</button>
+                  </td>
+                </ng-container> -->
+
+              </table>
+              <div *ngIf="!allInvoiceDetails?.length">
+                <mat-icon style="color: #1b56ca;margin-top: 10px;margin-left: 70px">info</mat-icon>
+                <span style="margin-left: 10px;">The table does not contain any data</span>
+              </div>
+              <mat-paginator #paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-progress-spinner *ngIf="isProgressBarVisibile" class="ProgressBarPostion" color="accent"
+        mode="indeterminate"></mat-progress-spinner>
+      <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+    </div>
   </div>
+
 </div>
