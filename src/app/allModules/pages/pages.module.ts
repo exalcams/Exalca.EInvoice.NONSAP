@@ -1,6 +1,5 @@
 import { NgModule, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
 import {
     MatFormFieldModule,
     MatAutocompleteModule,
@@ -41,7 +40,7 @@ import {
 } from '@angular/material';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { FuseCountdownModule, FuseHighlightModule, FuseMaterialColorPickerModule, FuseWidgetModule } from '@fuse/components';
+import { FuseCountdownModule, FuseHighlightModule, FuseMaterialColorPickerModule, FuseWidgetModule, FuseSidebarModule } from '@fuse/components';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FormsModule } from '@angular/forms';
@@ -50,11 +49,26 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardService } from 'app/services/dashboard.service';
 import { PdfDialogComponent } from './pdf-dialog/pdf-dialog.component';
 import { CancelIrnDialogComponent } from './cancel-irn-dialog/cancel-irn-dialog.component';
+import { ProjectDashboardComponent } from './project/project.component';
+import { ProjectDashboardService } from './project/project.service';
+import { EInvoiceCockpitComponent } from './e-invoice-cockpit/e-invoice-cockpit.component';
+import { ChartsModule } from 'ng2-charts';
 
 const routes = [
+    
+    {
+        path: 'project-dashboard',
+        component: ProjectDashboardComponent, resolve: {
+            data: ProjectDashboardService
+    }
+    },
     {
         path: 'dashboard',
         component: DashboardComponent
+    },
+    {
+        path: 'e-invoice-cockpit',
+        component: EInvoiceCockpitComponent
     },
     {
         path: '**',
@@ -113,12 +127,17 @@ const routes = [
         FuseHighlightModule,
         FuseMaterialColorPickerModule,
         FuseWidgetModule,
+        FuseSidebarModule,
 
         FormsModule,
-        NgxMaterialTimepickerModule
+        NgxMaterialTimepickerModule,
+        ChartsModule
+
     ],
-    declarations: [DashboardComponent,PdfDialogComponent, CancelIrnDialogComponent],
-    providers: [],
+    declarations: [DashboardComponent, PdfDialogComponent, CancelIrnDialogComponent, ProjectDashboardComponent, EInvoiceCockpitComponent],
+    providers: [
+        ProjectDashboardService
+    ],
     entryComponents: [
         PdfDialogComponent,
         CancelIrnDialogComponent

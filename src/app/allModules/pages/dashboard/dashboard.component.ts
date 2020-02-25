@@ -12,6 +12,7 @@ import { PdfDialogComponent } from '../pdf-dialog/pdf-dialog.component';
 import { DatePipe } from '@angular/common';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CancelIrnDialogComponent } from '../cancel-irn-dialog/cancel-irn-dialog.component';
+import * as shape from 'd3-shape';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +22,8 @@ import { CancelIrnDialogComponent } from '../cancel-irn-dialog/cancel-irn-dialog
   animations: fuseAnimations
 })
 export class DashboardComponent implements OnInit {
+    showChart = false;
+    canvasLabels = Array<any>();
   authenticationDetails: AuthenticationDetails;
     MenuItems: string[];
     isProgressBarVisibile: boolean;
@@ -51,7 +54,25 @@ export class DashboardComponent implements OnInit {
     dataSource = new MatTableDataSource<InvoiceDetails>();
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
-
+    widget5: any = {};
+    widget6: any = {};
+    
+    chartOptions = {
+        responsive: true
+      };
+    
+      chartData = [
+        // { data: [330, 300, 260, 200], label: 'Account A' },
+        // { data: [120, 455, 100, 340], label: 'Account B' },
+        // { data: [45, 67, 500, 300], label: 'Account C' }
+        { data: [20, 10, 30,18], label: 'Canceled' },
+        { data: [35, 20, 32, 25], label: 'IRN Genarated' },
+        { data: [15, 25, 19, 31], label: 'Invoice Created' }
+      ];
+    
+      chartLabels = ['January', 'February', 'March', 'April'];
+      
+    
     constructor(
         private _router: Router,
         matIconRegistry: MatIconRegistry,
@@ -65,6 +86,80 @@ export class DashboardComponent implements OnInit {
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(
             this.snackBar
         );
+        this.showChart = true;
+
+        
+        // this.widget5 = {
+        //     data: {
+        //         labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        //         datasets: [
+        //             {
+        //                 type: 'line',
+        //                 label: '',
+        //                 data: [40,28,45,36,25,98,20],
+        //                 fill: false,
+        //                 lineTension: 0.4,
+        //                 borderColor: ['#2979ff'],
+        //                 // pointBorderColor: "#71a5e2",
+        //                 pointRadius: 2,
+        //                 // pointHoverRadius: 7,
+        //                 // pointBorderWidth: 5,
+        //                 // pointBorderColor: '#ffffff',
+        //                 pointBackgroundColor: '#2979ff'
+        //                 // borderWidth: 1
+        //             },
+        //             {
+        //                 type: 'line',
+        //                 label: '',
+        //                 data: [40,28,45,36,25,98,20],
+        //                 fill: false,
+        //                 lineTension: 0.4,
+        //                 borderColor: ['#e32049'],
+        //                 // pointBorderColor: "#71a5e2",
+        //                 pointRadius: 2,
+        //                 // pointHoverRadius: 7,
+        //                 // pointBorderWidth: 5,
+        //                 // pointBorderColor: '#ffffff',
+        //                 pointBackgroundColor: '#e32049'
+        //                 // borderWidth: 1
+        //             }
+        //         ]
+        //     },
+        //     options: {
+        //         title: {
+        //             text: '',
+        //             display: true
+        //         },
+        //         legend: {
+        //             display: false
+        //         },
+        //         tooltips: {
+        //             enabled: true
+        //         },
+        //         scales: {
+        //             xAxes: [
+        //                 {
+        //                     barPercentage: 0.3,
+        //                     valueFormatString: 'DD-MMM',
+        //                     gridLines: {
+        //                         display: false
+        //                     }
+        //                 }
+        //             ],
+        //             yAxes: [
+        //                 {
+        //                     ticks: {
+        //                         beginAtZero: true,
+        //                         gridLines: {
+        //                             display: false
+        //                         },
+        //                         stepSize: 10
+        //                     }
+        //                 }
+        //             ]
+        //         }
+        //     }
+        // };
     }
 
     ngOnInit(): void {
