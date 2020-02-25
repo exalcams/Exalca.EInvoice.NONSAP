@@ -208,7 +208,66 @@ export class LoginComponent implements OnInit {
         }
       );
     }
-
+    if (this.MenuItems.indexOf('E-Invoice Cockpit') >= 0) {
+      this.children.push(
+        {
+          id: 'e-Invoice Cockpit',
+          title: 'E-Invoice Cockpit',
+          translate: 'NAV.SAMPLE.TITLE',
+          type: 'item',
+          icon: 'account_balance',
+          url: '/pages/e-invoice-cockpit',
+        }
+      );
+    }
+    if (this.MenuItems.indexOf('E-Invoice Audit') >= 0) {
+      this.children.push(
+        {
+          id: 'e-Invoice Audit',
+          title: 'E-Invoice Audit',
+          translate: 'NAV.SAMPLE.TITLE',
+          type: 'item',
+          icon: 'local_library',
+          url: '/pages/dashboard1',
+        }
+      );
+    }
+    if (this.MenuItems.indexOf('GST-ANX1') >= 0) {
+      this.children.push(
+        {
+          id: 'gst-ANX1',
+          title: 'GST-ANX1',
+          translate: 'NAV.SAMPLE.TITLE',
+          type: 'item',
+          icon: 'directions_boat',
+          url: '/pages/dashboard4',
+        }
+      );
+    }
+    if (this.MenuItems.indexOf('GST-ANX2') >= 0) {
+      this.children.push(
+        {
+          id: 'gst-ANX2',
+          title: 'GST-ANX2',
+          translate: 'NAV.SAMPLE.TITLE',
+          type: 'item',
+          icon: 'donut_small',
+          url: '/pages/dashboard2',
+        }
+      );
+    }
+    if (this.MenuItems.indexOf('GSTRET1') >= 0) {
+      this.children.push(
+        {
+          id: 'gstret1',
+          title: 'GSTRET1',
+          translate: 'NAV.SAMPLE.TITLE',
+          type: 'item',
+          icon: 'dns',
+          url: '/pages/dashboard3',
+        }
+      );
+    }
     // if (this.MenuItems.indexOf('RFQ Dashboard') >= 0) {
     //   this.children.push(
     //     {
