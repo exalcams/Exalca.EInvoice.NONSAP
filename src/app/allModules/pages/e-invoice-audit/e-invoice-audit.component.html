@@ -1,0 +1,50 @@
+<div id="chat" class=" page-layout carded fullwidth context-menu" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="10">
+    <div fxFlex>
+      <mat-card class="fullHeight p-12">
+        <mat-card-content>
+          <div fxLayout="row" class="mt-8">
+            <div fxFlex="100">
+              <table mat-table [dataSource]="dataSource" class="context-menu">
+                <tr mat-header-row *matHeaderRowDef="displayedColumns">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <ng-container matColumnDef="InvNO">
+                  <th mat-header-cell *matHeaderCellDef>Inv NO</th>
+                  <td mat-cell *matCellDef="let element">{{element.InvNO}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Plant">
+                  <th mat-header-cell *matHeaderCellDef>Plant</th>
+                  <td mat-cell *matCellDef="let element">{{element.Plant}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Responce">
+                  <th mat-header-cell *matHeaderCellDef>Responce</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.Responce}} </td>
+                </ng-container>
+                <ng-container matColumnDef="JsonValue">
+                  <th mat-header-cell *matHeaderCellDef>Json Value</th>
+                  <td mat-cell *matCellDef="let element">
+                    <mat-icon aria-label="image"  (click)="ViewJSON(element.JsonValue)">image</mat-icon>
+                  </td>
+                  
+                </ng-container>
+              </table>
+              <div *ngIf="!allEinvoiceAuditLogDetails?.length">
+                <mat-icon style="color: #1b56ca;margin-top: 10px;margin-left: 70px">info</mat-icon>
+                <span style="margin-left: 10px;">The table does not contain any data</span>
+              </div>
+              <mat-paginator #paginator [pageSizeOptions]="[50]"></mat-paginator>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-progress-spinner *ngIf="isProgressBarVisibile" class="ProgressBarPostion" color="accent"
+        mode="indeterminate"></mat-progress-spinner>
+      <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+    </div>
+  </div>
+</div>

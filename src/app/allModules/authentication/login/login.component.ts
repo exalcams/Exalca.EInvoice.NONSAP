@@ -228,7 +228,7 @@ export class LoginComponent implements OnInit {
           translate: 'NAV.SAMPLE.TITLE',
           type: 'item',
           icon: 'local_library',
-          url: '/pages/dashboard1',
+          url: '/pages/e-invoice-audit',
         }
       );
     }

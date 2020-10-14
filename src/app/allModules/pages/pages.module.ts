@@ -53,6 +53,8 @@ import { ProjectDashboardComponent } from './project/project.component';
 import { ProjectDashboardService } from './project/project.service';
 import { EInvoiceCockpitComponent } from './e-invoice-cockpit/e-invoice-cockpit.component';
 import { ChartsModule } from 'ng2-charts';
+import { EInvoiceAuditComponent } from './e-invoice-audit/e-invoice-audit.component';
+import { JsonDialogComponent } from './json-dialog/json-dialog.component';
 
 const routes = [
     
@@ -69,6 +71,10 @@ const routes = [
     {
         path: 'e-invoice-cockpit',
         component: EInvoiceCockpitComponent
+    },
+    {
+        path:'e-invoice-audit',
+        component:EInvoiceAuditComponent
     },
     {
         path: '**',
@@ -134,12 +140,13 @@ const routes = [
         ChartsModule
 
     ],
-    declarations: [DashboardComponent, PdfDialogComponent, CancelIrnDialogComponent, ProjectDashboardComponent, EInvoiceCockpitComponent],
+    declarations: [DashboardComponent, PdfDialogComponent, CancelIrnDialogComponent, ProjectDashboardComponent, EInvoiceCockpitComponent, EInvoiceAuditComponent, JsonDialogComponent],
     providers: [
         ProjectDashboardService
     ],
     entryComponents: [
         PdfDialogComponent,
+        JsonDialogComponent,
         CancelIrnDialogComponent
     ]
 })

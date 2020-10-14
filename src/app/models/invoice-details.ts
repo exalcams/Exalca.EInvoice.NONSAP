@@ -67,3 +67,10 @@ export class CancelIRN{
     CancelReason:string;
     CancelReasonRemark:string;
 }
+export class EinvoiceAuditLog{
+    InvoiceID:string;
+    InvNO:string;
+    Plant:string;
+    JsonValue:string;
+    Responce:string;
+}
