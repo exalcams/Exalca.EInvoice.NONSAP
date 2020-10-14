@@ -5,7 +5,7 @@ import { _MatChipListMixinBase } from '@angular/material';
 import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
 import { AdapterHView, AdapterH, ADAPTERI, AdapterItemRule, AdapterTypeWithItem } from 'app/models/icon.models';
-import { InvoiceDetails } from 'app/models/invoice-details';
+import { EinvoiceAuditLog, InvoiceDetails } from 'app/models/invoice-details';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +40,17 @@ export class DashboardService {
         )
         .pipe(catchError(this.errorHandler));
 }
+GetAllEInvoiceDetailsBasedOnSearch(invoiceNO: string,StartDate:string,EndDate:string): Observable<InvoiceDetails[] | string> {
+  return this._httpClient.get<InvoiceDetails[]>(`${this.baseAddress}api/Invoice/GetAllEInvoiceDetailsBasedOnSearch?invoiceNO=${invoiceNO}&StartDate=${StartDate}&EndDate=${EndDate}`)
+    .pipe(catchError(this.errorHandler));
+}
+GetAllEinvoiceAuditLogDetails(): Observable<EinvoiceAuditLog[] | string> {
+  return this._httpClient
+      .get<EinvoiceAuditLog[]>(
+          `${this.baseAddress}api/Invoice/GetAllEinvoiceAuditLogDetails`
+      )
+      .pipe(catchError(this.errorHandler));
+}
 GenerateIrnDetails(ID: number): Observable<InvoiceDetails | string> {
   return this._httpClient.get<InvoiceDetails>(`${this.baseAddress}api/Invoice/GenerateIrnDetails?ID=${ID}`)
     .pipe(catchError(this.errorHandler));
@@ -48,6 +59,7 @@ CancelIrnDetails(ID: number,CancelReason:string,CancelReasonRemark:string): Obse
   return this._httpClient.get<InvoiceDetails>(`${this.baseAddress}api/Invoice/CancelIrnDetails?ID=${ID}&CancelReason=${CancelReason}&CancelReasonRemark=${CancelReasonRemark}`)
     .pipe(catchError(this.errorHandler));
 }
+
 DowloandPdfFromID(ID: number): Observable<Blob | string> {
   return this._httpClient.get(`${this.baseAddress}api/Invoice/DowloandPdfFromID?ID=${ID}`, {
     responseType: 'blob',

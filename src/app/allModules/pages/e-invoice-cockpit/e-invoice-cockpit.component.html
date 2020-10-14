@@ -4,46 +4,62 @@
     <div fxFlex>
       <mat-card class="fullHeight p-12">
         <mat-card-content>
+          <form autocomplete="off" name="form" [formGroup]="InvoiceFilterFormGroup" novalidate>
           <div FxLayout="row" class="formRowStyle" fxLayout.xs="column">
             <div fxFlex="23%">
               <mat-form-field>
-                <input  style="height: 30px !important;" matInput placeholder="Invoice Number" >
-                <!-- <mat-error *ngIf="resetPasswordForm.get('currentPassword').hasError('required')">
-                    Current Password is required
+                <input  style="height: 30px !important;" matInput placeholder="Invoice Number" formControlName="InvNumber">
+                <!-- <mat-error
+                  *ngIf="InvoiceFilterFormGroup.get('InvNumber').touched && SearchFormGroup.get('InvNumber').hasError('required')">
+                  PO Number is required
                 </mat-error> -->
             </mat-form-field>
             </div>
             <div fxFlex="23%">
+              <!-- <mat-form-field class="mx-8" fxFlex>
+                <input matInput [matDatepicker]="picker" placeholder="Start Date" formControlName="StartDate"
+                  (keydown)="onKeydown($event)" (dateChange)="DateSelected()">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error class="pl-4 errorClass" *ngIf="InvoiceFilterFormGroup.get('StartDate').touched &&
+                InvoiceFilterFormGroup.get('StartDate').hasError('required')">
+                  Start date is required
+                </mat-error>
+              </mat-form-field> -->
               <mat-form-field>
-                <input style="height: 30px !important;" matInput placeholder="From date" [matDatepicker]="picker1" formControlName="FromDate"
-                  >
+                <input style="height: 30px !important;" matInput placeholder="From date" [matDatepicker]="picker1" 
+                formControlName="StartDate" (keydown)="onKeydown($event)" (dateChange)="DateSelected()" >
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
-                <!-- <mat-error
-                  *ngIf="documentFormGroup.get('FromDate').touched && documentFormGroup.get('FromDate').hasError('required')">
-                  From date is required
-                </mat-error> -->
+                <mat-error class="pl-4 errorClass" *ngIf="InvoiceFilterFormGroup.get('StartDate').touched &&
+                InvoiceFilterFormGroup.get('StartDate').hasError('required')">
+                  Start date is required
+                </mat-error>
               </mat-form-field>
             </div>
             <div fxFlex="23%">
               <mat-form-field>
-                <input matInput placeholder="To Date" style="height: 30px !important;" [matDatepicker]="picker2" formControlName="ToDate"
-                   >
+                <input matInput placeholder="To Date" style="height: 30px !important;" [matDatepicker]="picker2" 
+                formControlName="EndDate" (keydown)="onKeydown($event)" (dateChange)="DateSelected()">
                 <mat-datepicker-toggle matSuffix [for]="picker2"> </mat-datepicker-toggle>
                 <mat-datepicker #picker2 color="primary"></mat-datepicker>
-                <!-- <mat-error
-                  *ngIf="documentFormGroup.get('ToDate').touched && documentFormGroup.get('ToDate').hasError('required')">
-                  To date is required
-                </mat-error> -->
+                <mat-error class="pl-4 errorClass" *ngIf="InvoiceFilterFormGroup.get('EndDate').touched &&
+                InvoiceFilterFormGroup.get('EndDate').hasError('required')">
+                  End date is required
+                </mat-error>
               </mat-form-field>
+              <div *ngIf="isDateError" style="color:#f44336;font-size: 12px;margin-top: -16px">
+                End date should not be less than from date
+              </div>
               <!-- <div *ngIf="isDateError" style="color:#f44336;font-size: 12px;margin-top: -16px">
                 To date should not be less than from date
               </div> -->
             </div>
             <div fxFlex="64%">
-              <button class="mt-12 hbg"  mat-raised-button >Search</button>
+              <button class="mt-12 hbg"  mat-raised-button (click)="SearchInvoices()">Search</button>
             </div>
           </div>
+        </form>
           <div fxLayout="row" style="margin-top: 10px;">
             <div fxFlex align="end">
               <button  mat-raised-button class="btnBg1" (click)="GenarateIRN()">Genarate IRN</button>
@@ -92,7 +108,7 @@
                 <ng-container matColumnDef="Invoice_Date">
                   <th mat-header-cell *matHeaderCellDef>Invoice Date</th>
                   <td mat-cell *matCellDef="let element">
-                    {{element.InvoiceDate | date:'dd-MM-yyyy'}} </td>
+                    {{element.InvoiceDate}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="Customer">
@@ -174,5 +190,4 @@
       <div id="overlay" *ngIf="isProgressBarVisibile"></div>
     </div>
   </div>
-
 </div>

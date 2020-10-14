@@ -12,12 +12,15 @@ import { DatePipe } from '@angular/common';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CancelIrnDialogComponent } from '../cancel-irn-dialog/cancel-irn-dialog.component';
 import * as shape from 'd3-shape';
-import { ViewChild, Component, OnInit } from '@angular/core';
+import { ViewChild, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-e-invoice-cockpit',
   templateUrl: './e-invoice-cockpit.component.html',
-  styleUrls: ['./e-invoice-cockpit.component.scss']
+  styleUrls: ['./e-invoice-cockpit.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class EInvoiceCockpitComponent implements OnInit {
   authenticationDetails: AuthenticationDetails;
@@ -32,6 +35,7 @@ export class EInvoiceCockpitComponent implements OnInit {
   @ViewChild(MatPaginator) ConfigurationsPaginator: MatPaginator;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   allInvoiceDetails: InvoiceDetails[] = [];
+  isDateError: boolean;
   displayedColumns: string[] = [
       "Select",
       "Document_Type",
@@ -52,11 +56,12 @@ export class EInvoiceCockpitComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   widget5: any = {};
   widget6: any = {};
+  InvoiceFilterFormGroup: FormGroup;
   constructor(
       private _router: Router,
-      matIconRegistry: MatIconRegistry,
+      private _formBuilder: FormBuilder,
       sanitizer: DomSanitizer,
-      private datePipe: DatePipe,
+      private _datePipe: DatePipe,
       private dialog: MatDialog,
       private _dashboardService: DashboardService,
       public snackBar: MatSnackBar
@@ -87,6 +92,11 @@ export class EInvoiceCockpitComponent implements OnInit {
       } else {
           this._router.navigate(["/auth/login"]);
       }
+      this.InvoiceFilterFormGroup = this._formBuilder.group({
+        InvNumber: [''],
+        StartDate: [],
+        EndDate: [],
+    });
       this.ResetValues();
       this.getAllInvoiceDetails();
   }
@@ -227,8 +237,64 @@ export class EInvoiceCockpitComponent implements OnInit {
     }
   }
 
+  SearchInvoices(): void {
+    if (this.InvoiceFilterFormGroup.valid) {
+      if (!this.isDateError) {
+        const invnumber = this.InvoiceFilterFormGroup.get('InvNumber').value;
+        let StartDate = null;
+        const staDate = this.InvoiceFilterFormGroup.get('StartDate').value;
+        if (staDate) {
+            StartDate = this._datePipe.transform(staDate, 'yyyy-MM-dd');
+        }
+        let EndDate = null;
+        const enDate = this.InvoiceFilterFormGroup.get('EndDate').value;
+        if (enDate) {
+            EndDate = this._datePipe.transform(enDate, 'yyyy-MM-dd');
+        }
+        this.isProgressBarVisibile = true;
+        this._dashboardService.GetAllEInvoiceDetailsBasedOnSearch(invnumber, staDate, enDate) .subscribe(
+          data => {
+              this.allInvoiceDetails = data as InvoiceDetails[];
+              this.allInvoicesCount = this.allInvoiceDetails.length;
+              this.dataSource = new MatTableDataSource(
+                  this.allInvoiceDetails
+              );
+              this.dataSource.paginator = this.paginator;
+              this.dataSource.sort = this.sort;
+              this.isProgressBarVisibile = false;
+              this.ResetCheckbox();
+              this.INVID = null;
+          },
+          err => {
+              this.isProgressBarVisibile = false;
+              this.notificationSnackBarComponent.openSnackBar(
+                  err instanceof Object ? "Something went wrong" : err,
+                  SnackBarStatus.danger
+              );
+          }
+      );
+    }
+    }
+  }
+
+  DateSelected(): void {
+    const FROMDATEVAL = this.InvoiceFilterFormGroup.get('StartDate').value as Date;
+    const TODATEVAL = this.InvoiceFilterFormGroup.get('EndDate').value as Date;
+    if (FROMDATEVAL && TODATEVAL && FROMDATEVAL > TODATEVAL) {
+        this.isDateError = true;
+    } else {
+        this.isDateError = false;
+    }
+}
+onKeydown(event): boolean {
+    // console.log(event.key);
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+        return true;
+    } else {
+        return false;
+    }
+}
   Print(): void{
-    alert('hi');
     window.print();
   }
 }
