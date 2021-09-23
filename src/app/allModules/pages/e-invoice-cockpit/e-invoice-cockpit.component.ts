@@ -57,6 +57,7 @@ export class EInvoiceCockpitComponent implements OnInit {
   widget5: any = {};
   widget6: any = {};
   InvoiceFilterFormGroup: FormGroup;
+  SelectionList: number[] = [];
   constructor(
       private _router: Router,
       private _formBuilder: FormBuilder,
@@ -155,13 +156,14 @@ export class EInvoiceCockpitComponent implements OnInit {
     }
   }
 
-  GenarateIRN() : void {
-    if(this.INVID != null){
+  GenarateIRN(ids:number[]) : void {
+    if(ids.length>0){
       this.isProgressBarVisibile = true;
-      this._dashboardService.GenerateIrnDetails(this.INVID).subscribe(
+      this._dashboardService.GenerateIrnDetails(ids).subscribe(
         (data) => {
+          console.log(data);
           this.isProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar(data.toString(), SnackBarStatus.success);
+          // this.notificationSnackBarComponent.openSnackBar(data.toString(), SnackBarStatus.success);
           this.getAllInvoiceDetails();
         },
         (err) => {
@@ -172,7 +174,7 @@ export class EInvoiceCockpitComponent implements OnInit {
       );
     }
     else{
-      this.notificationSnackBarComponent.openSnackBar('Please select the invoice', SnackBarStatus.danger);
+      this.notificationSnackBarComponent.openSnackBar('Please select invoice', SnackBarStatus.danger);
     }
    
   }
@@ -296,6 +298,54 @@ onKeydown(event): boolean {
 }
   Print(): void{
     window.print();
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected(DataSource: MatTableDataSource<any>) {
+    const numSelected = this.selection.selected.length;
+    const numRows = DataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle(DataSource: MatTableDataSource<any>) {
+    if (this.isAllSelected(DataSource)) {
+      this.selection.clear();
+      return;
+    }
+    var data = [];
+    DataSource.data.forEach((element, i) => {
+      data.push(element);
+    });
+    this.selection = new SelectionModel<any>(true, data);
+    console.log(this.selection);
+    // this.selection.select(...this.SignDocumentsDataSource.data);
+  }
+
+  public GetCheckStatus(row: any): boolean {
+    var invoice = this.selection.selected.find(x => x.InvoiceID == row.InvoiceID);
+    if (invoice != undefined) {
+      return true;
+    }
+    return false;
+  }
+
+  public ToggleSelection(row:any){
+    var invoice = this.selection.selected.find(x => x.InvoiceID == row.InvoiceID);
+    if (invoice != undefined) {
+      this.selection.selected.splice(this.selection.selected.findIndex(x=>x.InvoiceID==invoice.InvoiceID),1);
+    }
+    else{
+      this.selection.selected.push(row);
+    }
+  }
+
+  GenerateIRNs(){
+    var selectedInvoices = [];
+    this.selection.selected.forEach(inv => {
+      selectedInvoices.push(inv.InvoiceID);
+    });
+    this.GenarateIRN(selectedInvoices);
   }
 }
 

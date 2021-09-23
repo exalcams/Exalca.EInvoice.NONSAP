@@ -51,8 +51,8 @@ GetAllEinvoiceAuditLogDetails(): Observable<EinvoiceAuditLog[] | string> {
       )
       .pipe(catchError(this.errorHandler));
 }
-GenerateIrnDetails(ID: number): Observable<InvoiceDetails | string> {
-  return this._httpClient.get<InvoiceDetails>(`${this.baseAddress}api/Invoice/GenerateIrnDetails?ID=${ID}`)
+GenerateIrnDetails(ID: any): Observable<any> {
+  return this._httpClient.post<any>(`${this.baseAddress}api/Invoice/GenerateIrnDetails`,ID)
     .pipe(catchError(this.errorHandler));
 }
 CancelIrnDetails(ID: number,CancelReason:string,CancelReasonRemark:string): Observable<InvoiceDetails | string> {
